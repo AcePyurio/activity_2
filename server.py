@@ -137,15 +137,15 @@ class RequestHandler(BaseHTTPRequestHandler):
             self._set_headers(400)
             self.wfile.write(json.dumps({'message': 'ID is required'}).encode('utf-8'))
 
-
+# start the HTTP server
 def run(server_class=HTTPServer, handler_class=RequestHandler, port=8010):
     server_address = ('', port)
-    
+     # start the server class
     httpd = server_class(server_address, handler_class)
     print(f"Starting httpd on port {port}...")  
     httpd.serve_forever() 
 
-
+# Entry point of the script
 if __name__ == '__main__':
     
     create_notes_table()
