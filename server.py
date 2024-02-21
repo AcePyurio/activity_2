@@ -79,7 +79,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 
 
-def run(server_class=HTTPServer, handler_class=NoteHandler, port=8010):
+def run(server_class=HTTPServer, handler_class=RequestHandler, port=8010):
     server_address = ('', port)
     
     httpd = server_class(server_address, handler_class)
