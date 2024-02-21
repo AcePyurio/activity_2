@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: Thenew_mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: proot
+      MYSQL_DATABASE: restNoteDatabase # Define the database name here
+    ports:
+      - "3306:3306"
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: Thenew_restapi_container
+    ports:
+      - "8010:8010"
+    depends_on:
+      - db
+    command: sh -c "python server.py runserver 0.0.0.0:8010"
