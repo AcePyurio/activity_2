@@ -6,7 +6,7 @@ services:
     container_name: Thenew_mysql_db
     environment:
       MYSQL_ROOT_PASSWORD: proot
-      MYSQL_DATABASE: restNoteDatabase # Define the database name here
+      MYSQL_DATABASE: restNoteDatabase
     ports:
       - "3306:3306"
 
