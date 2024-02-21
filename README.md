@@ -14,13 +14,13 @@ This project aims to develop a RESTful API for a simple note-taking application.
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/AcePyurio/activity_2_.git
+   git clone https://github.com/AcePyurio/activity_2.git
    ```
    This command clones the project repository from the specified URL.
 
 2. **Navigate to the project directory:**
    ```bash
-   cd project-directory
+   cd activity_2
    ```
    Use this command to change your current directory to the project directory where you cloned the repository.
 
