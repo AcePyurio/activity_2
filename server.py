@@ -76,7 +76,66 @@ class RequestHandler(BaseHTTPRequestHandler):
         self._set_headers(201)
         self.wfile.write(json.dumps({'message': 'created'}).encode('utf-8'))
 
+    # Processing PUT requests
+    def do_PUT(self):
+        # Parsing the data length
+        content_length = int(self.headers['Content-Length'])
+        
+        # Reading and parsing raw data into JSON
+        put_data = self.rfile.read(content_length)
+        note = json.loads(put_data)
 
+        # Parsing the note ID from the URL query parameters
+        parsed_path = urlparse(self.path)
+        note_id = parse_qs(parsed_path.query).get('id', None)
+
+        if note_id:
+           # Connecting to the database
+            connection = connect_to_database()
+            cursor = connection.cursor()
+
+           # Executing the update command
+            cursor.execute("UPDATE notes SET title = %s, content = %s WHERE id = %s", (note['title'], note['content'], note_id[0]))
+            connection.commit()
+            
+            # Closing cursor and connection
+            cursor.close()
+            connection.close()
+
+            # Sending a success message
+            self._set_headers()
+            self.wfile.write(json.dumps({'message': 'updated'}).encode('utf-8'))
+        else:
+           # Sending an error if no note ID provided
+            self._set_headers(400)
+            self.wfile.write(json.dumps({'message': 'ID is required'}).encode('utf-8'))
+
+    # Processing DELETE requests
+    def do_DELETE(self):
+        # Parsing the note ID from the URL query parameters
+        parsed_path = urlparse(self.path)
+        note_id = parse_qs(parsed_path.query).get('id', None)
+
+        if note_id:
+            # Establishing a connection to the database
+            connection = connect_to_database()
+            cursor = connection.cursor()
+
+           # Executing the delete command
+            cursor.execute("DELETE FROM notes WHERE id = %s", (note_id[0],))
+            connection.commit()
+
+            # Closing the cursor and the connection
+            cursor.close()
+            connection.close()
+
+           # Responding with a success message
+            self._set_headers()
+            self.wfile.write(json.dumps({'message': 'deleted'}).encode('utf-8'))
+        else:
+            # Responding with an error message if no note ID is provided
+            self._set_headers(400)
+            self.wfile.write(json.dumps({'message': 'ID is required'}).encode('utf-8'))
 
 
 def run(server_class=HTTPServer, handler_class=RequestHandler, port=8010):
